@@ -19,7 +19,7 @@ int dp[1005][1005],mark[1005][1005];
 
 void print_lcs( int i , int j )
 {
-    if(!i&&!j)      //出口(返回条件)
+    if(!i&&!j)      //出口(返回条件a)
         return; 
     else
     {
