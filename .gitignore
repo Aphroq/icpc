@@ -5,6 +5,7 @@
 .project
 .settings     
 .vscode
+.homework
  ##filter databfile、sln file##
 *.mdb  
 *.ldb  
