@@ -1,8 +1,9 @@
-## 问题描述: 求两个序列中最长的公共子序列
+# 问题描述: 
+>求两个序列中最长的公共子序列
 
+# 算法思想: 
 
-## 算法思想: 
-* O($n^2$)
+* ## O( $n^2$)
     
     使用动态规划 , dp[i][j] 代表 s1以i为结尾,s2以j为结尾,得到的LCS的最长长度
     
@@ -14,7 +15,7 @@
     所以我们可以得到状态转移方程
     >$$dp[i][j]=\begin{cases} 
 	max(dp[i-1][j],dp[i][j-1]), & s1[i]!=s2[j]\\ 
-	dp[i-1][i-1]+1, & s1[i]=s2[j]\ 
+	dp[i-1][j-1]+1, & s1[i]=s2[j]\ 
 	\end{cases}$$
     
     根据定义 , dp[i][j]初始化为0 , 然后双重循环.从小到大遍历
@@ -24,7 +25,7 @@
         在状态转移时做标记 , 然后通过回溯法带路 , 返回的时候输出路径
     
     <br><br>
-* O(nlogn)
+* ## O( nlogn )
     
     利用LIS的nlogn算法( 二分查找 )
 
@@ -39,19 +40,20 @@
     在对s3求LIS得到的值即为求LCS的答案。
 
     <br><br>
+ <div STYLE="page-break-after: always;"></div>
 
 
 
 
 
-## 求解过程:
+# 求解过程:
 ```
 #include<bits/stdc++.h>
 using namespace std;
 char a[1005],b[1005];
 int dp[1005][1005],mark[1005][1005];
 
-void print_lcs( int i , int j )
+void print_lcs( int i , int j )   //输出路径
 {
     if(!i&&!j)      //出口(返回条件)
         return; 
@@ -91,15 +93,16 @@ int main()
             {
                 if(a[i]==b[j])
                 {
-                    dp[i][j] = dp[i-1][j-1]+1,
+                    dp[i][j] = dp[i-1][j-1]+1;
                     mark[i][j] = 0;
                 }
+                // 由最优的子状态来更新自己
                 else if(dp[i][j-1]>dp[i-1][j])
-                {    dp[i][j] = dp[i][j-1],
+                {    dp[i][j] = dp[i][j-1];
                     mark[i][j] = -1;
                 }
                 else 
-                {    dp[i][j] = dp[i-1][j],
+                {    dp[i][j] = dp[i-1][j];
                     mark[i][j] = 1;
                 }
             }
@@ -122,11 +125,11 @@ int main()
         }
         else
         {
-            p = lower_bound(lis,lis +len,a[i]) - lis;
-            lis[p] = a[i];
+            p = lower_bound(lis,lis +len,a[i]) - lis;      
+            lis[p] = a[i];  //二分查找属于a[i]的位置
         }
     }
 
 
-/*
+*/
 ```
