@@ -17,28 +17,20 @@
 #define MAX 400000
 #define AIM 46234
 using namespace std;
-map<int , int> mp ;
+
 struct Node{
-    int s[9]; //九格子状态
-    int loc; //空位
-    int status ; //hash值
-    int fa;  //父亲
-    char d;  //方向
-}n[MAX],node,t;
-struct pos{
-    char c ;
-    int from;
-};
-int cnt=0;
+    int s[9];
+    int loc;
+    int status ;
+    int fa;
+    char d;
+}n[MAX];
+int len;
 int fac[] = {1, 1, 2, 6, 24, 120, 720, 5040, 40320, 362880 };
 int v[MAX];
 int xx[4] = {0,0,1,-1} ,yy[4]={1,-1,0,0};
-pos path[362885];
-char dir[4] = { 'l','r','u','d'};  //反过来
-void print( )
-{
-
-}
+char path[MAX];
+char dir[4] = { 'r','l','d','u'};
 int cantor( int s[9])
 {
     int sum=0;
@@ -53,39 +45,36 @@ int cantor( int s[9])
 
     return sum+1;
 }
-/*void count_path(Node end)
+void count_path(Node end)
 {
     int f = end.fa;
-    int len = 1 ;
-    path[cnt][len++].c = end.d;
+    len =0;
+    path[len++] = end.d;
     while(f)
     {
-        path[cnt][len++].c = n[f].d;
+        path[len++] = n[f].d;
         f = n[f].fa;
     }
-    path[cnt][0].len = len;
-    mp[end.status] = cnt;
-    cnt++; 
     //printf("cp\n");
-}*/
+}
 int bfs()
 {
     memset(v,0,sizeof(v));
     Node next;
     int head , tail ;
     head= tail =0;
-    t.status = cantor(t.s);
-    path[t.status].from = -1;
-    v[t.status] = 1;
+    n[0].status = cantor(n[0].s);
+    v[n[0].status] = 1;
 
     while(head<=tail)
     {
-        /*if(n[head].status == AIM)
+        if(n[head].status == AIM)
         {
-             return 1;
-        }*/
-        //count_path(n[head]);
-        //printf("cnt :%d  here1\n",cnt);
+            
+            count_path(n[head]);
+            return 1;
+        }
+
         int x=n[head].loc/3;
         int y=n[head].loc%3;
 
@@ -107,8 +96,12 @@ int bfs()
             if(!v[next.status])
             {
                 v[next.status] = 1;
-                path[next.status].from = n[head].status;
-                path[next.status].c = dir[i];
+                if(next.status ==AIM)
+                {
+                    
+                    count_path(next);
+                    return 1;
+                }
                 n[++tail] = next;
             }
             
@@ -123,53 +116,27 @@ int bfs()
 int main()
 {
     char ch[3];
-    int cntt=0;
-    for(int i=0 ; i<8 ;i++)
-    {
-        t.s[i] = i+1;
-    }
-    t.s[8] = 0;
-    t.loc = 8 ;
-    t.status = 46234 ;
-    t.fa = -1;
-    t.d = 'x';
-    //cantor( t.s) ;
-    bfs() ;
-    //printf("ok\n");
-    while(~scanf("%s",ch)){
-    Node node;
-    if(cntt)
-        printf("\n");
-    cnt++;
-    if(!strcmp(ch,"x"))
-            node.s[0] = 0 , node.loc = 0;
-        else node.s[0] = ch[0] - '0';
-
-    for(int i=1 ;i<9 ;i++)
+    for(int i=0 ; i<9 ;i++)
     {
         scanf("%s",ch);
         if(!strcmp(ch,"x"))
-            node.s[i] = 0 , node.loc = i;
-        else node.s[i] = ch[0] - '0';
-        /*printf("%d ",n[1].s[i]);
-        if((i+1)%3==0)
-            printf("\n");*/
+        {
+            n[0].s[i]=0;
+            n[0].loc = i;
+        }
+        else 
+            n[0].s[i] = ch[0] -'0';
     }
-    node.status = cantor(node.s);
-    if( v[node.status] )
+
+    if(bfs())
     {
         //printf("end bfs\n");
-        int ttt=0;
-        int s = node.status;
-        while(path[s].from!=-1)
-        {
-            printf("%c",path[s].c);
-            s = path[s].from;
-        }
+        for( int i=len-1 ;i>=0 ;i--)
+            printf("%c ",path[i]);
+        printf("\n");
+    }
+    else printf("unsolvable\n");
 
-    }
-    else printf("unsolvable");
-    }
     return 0;
 
 }
