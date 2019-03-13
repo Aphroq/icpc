@@ -16,11 +16,15 @@ void init(Vector *vector,int size) {
     vector->length=0;
 }
 
+void clear(int *vector) {
+    free(vector);
+}
+
 void expand(Vector* vector) {
     int *old_data=vector->data;
     
     vector->data=(int *)malloc(2*vector->size*sizeof(int));
-    
+    // 可用calloc扩展 , 不用重新分配
     for(int i=1;i<=vector->length;i++)
     {
         vector->data[i]=old_data[i];
@@ -48,10 +52,14 @@ int insert(Vector* vector,int loc,int val) {
     return OK;
 }
 
-
-void clear(Vector *vector) {
-    free(vector);
+void print(Vector* vector )
+{
+        for(int i=0 ; i< vector->length ;i++)
+            printf("loc: %d  val: %d\n",i,vector->data[i]);
+        printf("outend\n\n\n");
+        return ;
 }
+
 
 int main() {
     Vector *a = (Vector *)malloc(sizeof(Vector));
@@ -69,6 +77,7 @@ int main() {
         
         if(insert(a,p,q))printf("success\n");
         else printf("failed\n");
+        print(a);
     
     }
     return 0;
