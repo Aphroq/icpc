@@ -25,7 +25,8 @@ struct pos
 }node;
 
 int cnt=1;
-int ss[1005][MAX][MAX],vis[1005][MAX][MAX],s[MAX][MAX];
+bool ss[1005][MAX][MAX],vis[1005][MAX][MAX];
+int s[MAX][MAX];
 
 void bfs()
 {
@@ -78,9 +79,12 @@ void deal()
         }
         for(int t =1 ; t<=d ;t+=pao[h].t)
         {
-            int rx =xx , ry = yy - pao[h].v * t; 
-            if( ry > stop )
+            int rx =xx ,ry;
+            for( int j=1 ;j<=t ;j++)
+            {   ry = yy - pao[h].v * j; 
+                if( ry > stop )
                 ss[t][rx][ry] = 1 ;
+            }
         }
     }
     if(pao[h].c=='E')
@@ -97,9 +101,12 @@ void deal()
         }
         for(int t =1 ; t<=d ;t+=pao[h].t)
         {
-            int rx =xx , ry = yy + pao[h].v * t; 
-            if( ry < stop )
+            int rx =xx ,ry;
+            for( int j=1 ;j<=t ;j++)
+            {   ry = yy + pao[h].v * j; 
+                if( ry < stop )
                 ss[t][rx][ry] = 1 ;
+            }
         }
     }
     if(pao[h].c=='S')
@@ -116,9 +123,12 @@ void deal()
         }
         for(int t =1 ; t<=d ;t+=pao[h].t)
         {
-            int rx = xx + pao[h].v*t , ry = yy ; 
-            if( rx < stop )
+           int rx  ,ry=yy;
+            for( int j=1 ;j<=t ;j++)
+            {   rx = xx + pao[h].v * j; 
+                if( rx < stop )
                 ss[t][rx][ry] = 1 ;
+            }
         }
     }
     if(pao[h].c=='N')
@@ -133,27 +143,24 @@ void deal()
                 break;
             }
         }
-        /*for(int t =1 ; t<=d ;t+=pao[h].t)
+        for(int t =1 ; t<=d ;t+=pao[h].t)
         {
-            int rx = xx - pao[h].v*t , ry = yy ; 
-            if( rx > stop )
+           int rx  ,ry=yy;
+            for( int j=1 ;j<=t ;j++)
+            {   rx = xx - pao[h].v * j; 
+                if( rx > stop )
                 ss[t][rx][ry] = 1 ;
-        }*/
-        
-
+            }
+        }
     }
-
-    }
-    /*for(int i=0;i<=m ;i++)
-    {   for(int j=0 ; j<=n ;j++)
-            printf("%d ",s[i][j]);
-    	printf("\n");
-	}*/
+ 
     for(int i=0;i<=m ;i++)
     {   for(int j=0 ; j<=n ;j++)
-            printf("%d ",ss[3][i][j]);
+            printf("%d ",ss[2][i][j]);
     	printf("\n");
 	}
+
+    }
 }
 int main()
 {
